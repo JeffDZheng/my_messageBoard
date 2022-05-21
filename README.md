@@ -5,7 +5,7 @@
 #專案結構
 bulletin<br>
 └── public<br>
-    └── css<br>
+>└── css<br>
         └── main.css<br>
     ├── image<br>
     └── js<br>
