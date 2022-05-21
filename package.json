@@ -1,0 +1,22 @@
+{
+  "name": "my_messageboard",
+  "version": "1.0.0",
+  "description": "這是我為了練習node.js與SQL所建立的第一個作品，參考自 [YC's Weekly Journal](https://ycjhuo.gitlab.io/blogs/NodeJS-Express-Build-Bulletins.html)。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeffDZheng/my_messageBoard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JeffDZheng/my_messageBoard/issues"
+  },
+  "homepage": "https://github.com/JeffDZheng/my_messageBoard#readme",
+  "dependencies": {
+    "art-template": "^4.13.2"
+  }
+}
