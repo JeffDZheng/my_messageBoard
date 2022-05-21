@@ -1,6 +1,6 @@
 一個簡易留言板
 ===
-這是我為了練習node.js與SQL所建立的第一個作品
+這是我為了練習node.js與SQL所建立的第一個作品，參考自[YC's Weekly Journal]([http://blog.csdn.net/guodongxiaren](https://ycjhuo.gitlab.io/blogs/NodeJS-Express-Build-Bulletins.html))  
 
 bulletin
 └── public
