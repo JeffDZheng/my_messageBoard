@@ -5,13 +5,13 @@
 #專案結構
 bulletin<br>
 └── public<br>
->└── css<br>
-        └── main.css<br>
-    ├── image<br>
-    └── js<br>
-└── views<br>
-    ├── index.html<br>
-    ├── post.html<br>
-    └── 404.html<br>
-├── app.js<br>
-└── package.json<br>
+* └── css<br>
+* * └── main.css<br>
+*  ├── image<br>
+*  └── js<br>
+* └── views<br>
+* * ├── index.html<br>
+* * ├── post.html<br>
+* * └── 404.html<br>
+* ├── app.js<br>
+* └── package.json<br>
