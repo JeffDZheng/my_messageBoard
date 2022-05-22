@@ -1,4 +1,4 @@
-# 一個簡易留言板
+# 簡易留言板
 這是我為了練習node.js與SQL所建立的第一個作品，參考自 [YC's Weekly Journal](https://ycjhuo.gitlab.io/blogs/NodeJS-Express-Build-Bulletins.html)。
 
 ## 資料夾結構
@@ -21,3 +21,11 @@ my_messageBoard
 └── package.json
 ```
 
+## 環境設定
+npm套件安裝
+```
+npm install art-template
+npm install body-parser
+npm install express
+npm install express-art-template
+```
