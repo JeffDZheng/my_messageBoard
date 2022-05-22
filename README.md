@@ -21,3 +21,11 @@ my_messageBoard
 └── package.json
 ```
 
+## 環境設定
+npm套件安裝
+```
+npm install art-template
+npm install body-parser
+npm install express
+npm install express-art-template
+```
