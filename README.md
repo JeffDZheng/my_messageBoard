@@ -1,12 +1,15 @@
-# 簡易留言板
-這是我為了練習node.js與SQL所建立的第一個作品，參考自 [YC's Weekly Journal](https://ycjhuo.gitlab.io/blogs/NodeJS-Express-Build-Bulletins.html)。
+<h1>簡易留言板</h1>
+<p>這是我為了練習node.js與SQL所建立的第一個作品，參考自 <a href="https://ycjhuo.gitlab.io/blogs/NodeJS-Express-Build-Bulletins.html"> YC's Weekly Journal </a>。</p>
+<hr>
+<h2>資料夾結構</h2>
+<p>
+<strong>public：</strong>資料夾內放置 css, image, js 等網站會用到的資源、圖片等<br>
+<strong>views：</strong>放置各個頁面的 html (方便管理)<br>
+<strong>app.js：</strong>業務邏輯<br>
+<strong>package.</strong>json：專案設定 & 用到的各種套件
+</p>
 
-## 資料夾結構
-public：資料夾內放置 css, image, js 等網站會用到的資源、圖片等<br>
-views：放置各個頁面的 html (方便管理)<br>
-app.js：業務邏輯<br>
-package.json：專案設定 & 用到的各種套件
-```
+<pre>
 my_messageBoard
 └── public
     └── css
@@ -19,13 +22,16 @@ my_messageBoard
     └── 404.html
 ├── app.js
 └── package.json
-```
+</pre>
 
-## 環境設定
-npm套件安裝
-```
+<h2>環境設定</h2>
+<h3>npm套件安裝</h3>
+<pre>
 npm install art-template
 npm install body-parser
 npm install express
 npm install express-art-template
-```
+</pre>
+<hr>
+<h2><span>&#9888;</span>提醒</h2>
+<b>內容中有使用到來自外部網站連結的css，基於職業習慣所以我有對它進行 <a href="https://www.virustotal.com/">Virustotal</a> 的掃描，請安心使用。</b>
