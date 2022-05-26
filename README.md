@@ -34,4 +34,4 @@ npm install express-art-template
 </pre>
 <hr>
 <h2><span>&#9888;</span>提醒</h2>
-<b>內容中有使用到來自外部網站連結的css，基於職業習慣，我有對它進行 <a href="https://www.virustotal.com/">Virustotal</a> 的掃描，若不放心可再自行透過其他管道檢查。</b>
+<P>內容中有使用到來自外部網站連結的css，基於職業習慣，我有對它進行 <a href="https://www.virustotal.com/">Virustotal</a> 的掃描，若不放心可再自行透過其他管道檢查。</P>
