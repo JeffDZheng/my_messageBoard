@@ -31,6 +31,7 @@ npm install art-template
 npm install body-parser
 npm install express
 npm install express-art-template
+npm install mysql
 </pre>
 <hr>
 <h2><span>&#9888;</span>提醒</h2>
