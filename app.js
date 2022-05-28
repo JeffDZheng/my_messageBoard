@@ -1,127 +1,84 @@
-var http = require('http')
-var fs = require('fs')
-var url = require('url')
-var template = require('art-template')
+var express = require('express')
+var bodyParser = require('body-parser')
 
-// 會先載入的留言紀錄(模擬)
+var app = express()
+
+
+// body-parser 用來抓取 HTML Form Post 數據
+// 加入後 req 就會多出 body 這個屬性
+// 就可透過 req.body 得到 POST 的數據
+
+// parse 請求報文主體的型別: <application/x-www-form-urlencoded>
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse 請求報文主體的型別: <application/json>
+app.use(bodyParser.json())
+
+
+// 模仿留言紀錄
 var comments = [
   {
     name: 'User 1',
     message: 'Hello',
-    dateTime: '2021-5-27 18:20:54'
+    dateTime: '2021-6-2 17:30:32'
   },
   {
     name: 'User 2',
     message: 'There',
-    dateTime: '2021-5-27 18:20:54'
+    dateTime: '2021-6-2 17:30:32'
   }
 ]
 
-http.createServer(function (req, res) {
-    
-    // parseObj = url.parse(urlStr, parseQueryString = false)
-    // urlStr : url字串
-    // parseQueryString : 預設false, true 會解析query string
-    // parseObj : 解析後的url物件
-    //      .protocol : 通訊協定
-    //      .auth : 認證信息
-    //      .username : 使用者帳號
-    //      .password : 使用者密碼
-    //      .host : 主機名稱 + 端口數
-    //      .hostname : 主機名稱
-    //      .port : 端口數
-    //      .pathname : 網址
-    //      .query : query string
-    //      .hash : URL 的片段
-    //      .href : 完整url
-    //      .origin : url來源
-    var parseObj = url.parse(req.url, true)
-    var pathname = parseObj.pathname
-    /* 
-       在讀取首頁時，parseObj 為：
-       Url { protocol: null, slashes: null, auth: null, host: null, port: null, hostname: null,
-        hash: null, search: null, query: [Object: null prototype] {}, pathname: '/', path: '/', href: '/' }
+// 先將 art-template 模板引擎引入 express
+// 第一個參數表示將哪種頁面的副檔名 (html, jade, art) 帶入模板引擎中
+app.engine('html', require('express-art-template'))
 
-       在 Post 頁，Submit 後 parseObj 為：
-       Url { protocol: null, slashes: null, auth: null, host: null, port: null, hostname: null, hash: null,
-         search: '?name=Leon&message=Say+something', query: [Object: null prototype] { name: 'Leon', message: 'Say something' },
-          pathname: '/submit', path: '/submit?name=Leon&message=Say+something', href: '/submit?name=Leon&message=Say+something' }
 
-       可看出不同的地方為：search, query, pathname, path, href，而等等我們就要用這個 query 來取得我們 submit 的值
+// Opening access to folder public (若不開放 user 存取則可省略)
+// eg. http://localhost:3000/public/css/main.css
 
-       擷取網址列的路徑 (會忽略 ? 之後的內容)
-       eg. http://localhost:3000/post?name=Leon&message=Say+something
-       只會抓到 /post
-    */
+// 若省略第一個參數，則存取 public folder 內的檔案時則不須在網址列加上 /public
+// eg. http://localhost:3000/css/main.css
+app.use('/public/', express.static('./public/'))
 
-    // 路由邏輯
-    // Homepage
-    if (pathname === '/') {
-      // data = ./views/index.html
-      fs.readFile('./views/index.html', function (err, data) {
-        if (err) {
-          return res.end('Loading index page failed.')
-        }
-        // 因為 data 是二進制，所以須轉為 string
-        var htmlStr = template.render(data.toString(), { comments: comments })
-        res.end(htmlStr)
-      })
-    }
-    // Post page
-    else if (pathname === '/post') {
-      // data = ./views/post.html
-      fs.readFile('./views/post.html', function (err, data) {
-        if (err) {
-          return res.end('Loading post page failed.')
-        }
-        res.end(data)
-      })
-    }
-
-    // Opening access to folder public (若不開放 user 存取則可省略)
-    // eg. http://localhost:3000/public/js/main.js
-    else if (pathname.indexOf('/public/') === 0) {
-      fs.readFile('.' + pathname, function (err, data) {
-        if (err) {
-          return res.end('Loading public folder failed.')
-        }
-        res.end(data)
-      })
-    }
-    // Click submit
-    else if (pathname === '/submit') {
-
-      // 取得 submit 的 data
-      // comment = query: [Object: null prototype] { name: 'Leon', message: 'Say something' }
-      var comment = parseObj.query
-      
-      // 取得submit日期時間
-      // today =  2021-05-28T18:40:03.622Z
-      var today = new Date();
-      var date = today.getFullYear() + '-' + (today.getMonth() + 1 ) + '-' + today.getDate();
-      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      var dateTime = date + ' ' + time;
-      comment.dateTime = dateTime
-
-      // 將留言放在留言串前端
-      comments.unshift(comment)
-
-      // 設定狀態碼為 302 (網頁重定向)，跳轉到首頁
-      res.statusCode = 302
-      res.setHeader('Location', '/')
-      res.end()
-    }
-    // 設定 page 404 
-    else {
-      fs.readFile('./views/404.html', function (err, data) {
-        if (err) {
-          return res.end('404 Not Found.')
-        }
-        res.end(data)
-      })
-    }
+// 路由邏輯
+// Homepage
+app.get('/', function (req, res) {
+    // res.render('HTML 檔名), {要帶入的 data})
+    // 第一個參數不須寫路徑，預設會去 views folder 裡面找
+    // 若要更改默認目錄，則用 app.set('views', '默認目錄的路徑')
+    res.render('index.html', {
+    comments: comments
   })
+})
 
-  .listen(3000, function () {
-    console.log('running...')
-  })
+// Post page
+app.get('/post', function (req, res) {
+  res.render('post.html')
+})
+
+// Click submit on post page
+app.post('/submit', function (req, res) {
+  var comment = req.body
+  
+  // today =  2021-05-28T18:40:03.622Z
+  var today = new Date();
+  
+  var date = today.getFullYear() + '-' + (today.getMonth() + 1 ) + '-' + today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date + ' ' + time
+  comment.dateTime = dateTime
+  
+  comments.unshift(comment)
+
+  // submit 結束後跳轉至首頁
+  res.redirect('/')
+})
+
+// 若頁面不存在則導向到 404 page
+app.get('*', function (req, res) {
+  res.status(404).render('404.html')
+})
+
+app.listen(3000, function () {
+  console.log('running...')
+})
