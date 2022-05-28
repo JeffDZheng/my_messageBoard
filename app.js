@@ -8,13 +8,13 @@ var app = express()
 // 加入後 req 就會多出 body 這個屬性
 // 就可透過 req.body 得到 POST 的數據
 
-// parse application/x-www-form-urlencoded
+// parse 請求報文主體的型別: <application/x-www-form-urlencoded>
 app.use(bodyParser.urlencoded({ extended: false }))
-// parse application/json
+// parse 請求報文主體的型別: <application/json>
 app.use(bodyParser.json())
 
 
-// 每次重開服務時，預先保存的留言(可省略)
+// 模仿留言紀錄
 var comments = [
   {
     name: 'User 1',
