@@ -38,7 +38,7 @@ npm install mysql
 <pre>
 USE test;
 CREATE TABLE message (name VARCHAR(8), message VARCHAR(255), dateTime DATETIME);
-SET time_zone = '+8:00';
+SET TIME_ZONE = '+8:00';
 SELECT * FROM message;
 </pre>
 <hr>
