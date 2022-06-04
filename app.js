@@ -3,7 +3,6 @@ var bodyParser = require('body-parser')
 
 var app = express()
 
-
 // body-parser 用來抓取 HTML Form Post 數據
 // 加入後 req 就會多出 body 這個屬性
 // 就可透過 req.body 得到 POST 的數據
@@ -13,25 +12,19 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse 請求報文主體的型別: <application/json>
 app.use(bodyParser.json())
 
-
-// 模仿留言紀錄
-var comments = [
-  {
-    name: 'User 1',
-    message: 'Hello',
-    dateTime: '2021-6-2 17:30:32'
-  },
-  {
-    name: 'User 2',
-    message: 'There',
-    dateTime: '2021-6-2 17:30:32'
-  }
-]
-
+//建立MySQL連線
+var mysql = require('mysql');
+var con = mysql.createConnection({
+  host     : '127.0.0.1',
+  port: 3306,
+  user     : 'user',
+  password : 'user_password',
+  database : 'test'
+});
+  
 // 先將 art-template 模板引擎引入 express
 // 第一個參數表示將哪種頁面的副檔名 (html, jade, art) 帶入模板引擎中
 app.engine('html', require('express-art-template'))
-
 
 // Opening access to folder public (若不開放 user 存取則可省略)
 // eg. http://localhost:3000/public/css/main.css
@@ -46,8 +39,15 @@ app.get('/', function (req, res) {
     // res.render('HTML 檔名), {要帶入的 data})
     // 第一個參數不須寫路徑，預設會去 views folder 裡面找
     // 若要更改默認目錄，則用 app.set('views', '默認目錄的路徑')
-    res.render('index.html', {
-    comments: comments
+
+    var sql = "SELECT * FROM message;";
+    //引入MySQL留言資料
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      res.render('index.html', {
+      comments: result
+    });
   })
 })
 
@@ -59,16 +59,15 @@ app.get('/post', function (req, res) {
 // Click submit on post page
 app.post('/submit', function (req, res) {
   var comment = req.body
-  
-  // today =  2021-05-28T18:40:03.622Z
-  var today = new Date();
-  
-  var date = today.getFullYear() + '-' + (today.getMonth() + 1 ) + '-' + today.getDate();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date + ' ' + time
-  comment.dateTime = dateTime
-  
-  comments.unshift(comment)
+  var username = comment.name
+  var message = comment.message
+
+  var sql = "INSERT INTO message (name,message,dateTime)VALUES('"+username+"','"+message+"',NOW());";
+    //引入MySQL留言資料
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
 
   // submit 結束後跳轉至首頁
   res.redirect('/')
