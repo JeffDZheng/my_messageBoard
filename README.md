@@ -33,6 +33,13 @@ npm install express
 npm install express-art-template
 npm install mysql
 </pre>
+<h3>MySQL資料庫設定</h3>
+<p>本次的MySQL所使用的table須預先設置。</p>
+<pre>
+USE test;
+CREATE TABLE message (name VARCHAR(8), message VARCHAR(255), dateTime DATETIME);
+SELECT * FROM message;
+</pre>
 <hr>
 <h2><span>&#9888;</span>提醒</h2>
 <P>內容中有使用到來自外部網站連結的css，基於職業習慣，我有對它進行 <a href="https://www.virustotal.com/">Virustotal</a> 的掃描，若不放心可再自行透過其他管道檢查。</P>
