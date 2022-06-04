@@ -19,7 +19,8 @@ var con = mysql.createConnection({
   port: 3306,
   user     : 'user',
   password : 'user_password',
-  database : 'test'
+  database : 'test',
+  dateStrings : true
 });
   
 // 先將 art-template 模板引擎引入 express
