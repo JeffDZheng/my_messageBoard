@@ -38,8 +38,10 @@
         {{each comments}}
         <!-- 留言列表的格式:
               使用者名稱:留言 + 日期時間 -->
-        <li class="list-group-item">{{ $value.name }}：{{ $value.message }}
-            <span class="pull-right">{{ $value.dateTime }}</span></li>
+        <li class="list-group-item">
+          {{ $value.name }}：{{ $value.message }}
+          <span class="pull-right">{{ $value.dateTime }}</span>
+        </li>
         {{/each}}
       </ul>
     </div>
