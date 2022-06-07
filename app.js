@@ -1,19 +1,18 @@
 var express = require('express')
 var bodyParser = require('body-parser')
+var mysql = require('mysql');
 
 var app = express()
 
 // body-parser 用來抓取 HTML Form Post 數據
 // 加入後 req 就會多出 body 這個屬性
 // 就可透過 req.body 得到 POST 的數據
-
 // parse 請求報文主體的型別: <application/x-www-form-urlencoded>
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse 請求報文主體的型別: <application/json>
 app.use(bodyParser.json())
 
 //建立MySQL連線
-var mysql = require('mysql');
 var con = mysql.createConnection({
   host     : '127.0.0.1',
   port: 3306,
@@ -41,11 +40,10 @@ app.get('/', function (req, res) {
     // 第一個參數不須寫路徑，預設會去 views folder 裡面找
     // 若要更改默認目錄，則用 app.set('views', '默認目錄的路徑')
 
-    var sql = "SELECT * FROM message;";
+    var sql = "SELECT * FROM message ORDER BY dateTime DESC;";
     //引入MySQL留言資料
     con.query(sql, function (err, result) {
       if (err) throw err;
-      console.log(result);
       res.render('index.html', {
       comments: result
     });
@@ -65,13 +63,28 @@ app.post('/submit', function (req, res) {
 
   var sql = "INSERT INTO message (name,message,dateTime)VALUES('"+username+"','"+message+"',NOW());";
     //引入MySQL留言資料
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log(result);
+  });
+})
+
+//需要關鍵字輸入****
+app.get('/search',function (req,res){
+  //解析query string
+  var search_query = req.query
+  var input_rname = search_query.name
+  var input_keyword = search_query.message
+
+  //轉為MySQL語言向Database發送要求
+  var sql = "SELECT * FROM message WHERE name LIKE '%"+input_rname+"%' and message LIKE '%"+input_keyword+"%' ORDER BY dateTime DESC;";
     con.query(sql, function (err, result) {
       if (err) throw err;
-      console.log(result);
+      console.log(sql);
+      res.render('index.html', {
+        comments: result
+      });
     });
-
-  // submit 結束後跳轉至首頁
-  res.redirect('/')
 })
 
 // 若頁面不存在則導向到 404 page
