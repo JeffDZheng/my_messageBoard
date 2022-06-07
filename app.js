@@ -67,6 +67,7 @@ app.post('/submit', function (req, res) {
     if (err) throw err;
     console.log(result);
   });
+  res.redirect('/')
 })
 
 //需要關鍵字輸入****
@@ -75,9 +76,9 @@ app.get('/search',function (req,res){
   var search_query = req.query
   var input_rname = search_query.name
   var input_keyword = search_query.message
-
-  //轉為MySQL語言向Database發送要求
-  var sql = "SELECT * FROM message WHERE name LIKE '%"+input_rname+"%' and message LIKE '%"+input_keyword+"%' ORDER BY dateTime DESC;";
+  if(input_rname || input_keyword){
+    //轉為MySQL語言向Database發送要求
+    var sql = "SELECT * FROM message WHERE name LIKE '%"+input_rname+"%' and message LIKE '%"+input_keyword+"%' ORDER BY dateTime DESC;";
     con.query(sql, function (err, result) {
       if (err) throw err;
       console.log(sql);
@@ -85,6 +86,10 @@ app.get('/search',function (req,res){
         comments: result
       });
     });
+  }else{
+    console.log("Back to index-page.")
+    res.redirect('/')
+  }
 })
 
 // 若頁面不存在則導向到 404 page
